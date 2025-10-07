@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VerdeVivo - Meu Diário de Plantas</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2e8b57 0%, #3cb371 50%, #90ee90 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Elementos naturais de fundo */
+        .leaf {
+            position: fixed;
+            opacity: 0.15;
+            z-index: 0;
+            animation: float 20s infinite ease-in-out;
+            pointer-events: none;
+            font-size: 80px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .leaf-1 {
+            top: 8%;
+            left: 3%;
+            animation-delay: 0s;
+            transform: rotate(15deg);
+        }
+
+        .leaf-2 {
+            top: 75%;
+            left: 6%;
+            animation-delay: 3s;
+            transform: rotate(-10deg);
+            font-size: 60px;
+        }
+
+        .leaf-3 {
+            top: 15%;
+            right: 4%;
+            animation-delay: 6s;
+            transform: rotate(-20deg);
+            font-size: 70px;
+        }
+
+        .leaf-4 {
+            top: 70%;
+            right: 7%;
+            animation-delay: 9s;
+            transform: rotate(25deg);
+            font-size: 50px;
+        }
+
+        .leaf-5 {
+            top: 40%;
+            left: 10%;
+            animation-delay: 12s;
+            transform: rotate(5deg);
+            font-size: 65px;
+        }
+
+        .leaf-6 {
+            top: 55%;
+            right: 9%;
+            animation-delay: 15s;
+            transform: rotate(-15deg);
+            font-size: 75px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(var(--initial-rotate, 0deg));
+            }
+            33% {
+                transform: translateY(-25px) rotate(calc(var(--initial-rotate, 0deg) + 8deg));
+            }
+            66% {
+                transform: translateY(15px) rotate(calc(var(--initial-rotate, 0deg) - 5deg));
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .header-title {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header-title h1 {
+            color: white;
+            font-size: 2.8em;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-weight: 700;
+        }
+
+        .header-title p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2em;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 18px 30px;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            min-width: 220px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .tab-button.active {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .tab-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 35px;
+            min-height: 500px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #2e8b57;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .plant-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #2e8b57;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plant-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2e8b57, #3cb371, #90ee90);
+        }
+
+        .plant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .plant-card h3 {
+            color: #2e7d32;
+            margin-bottom: 12px;
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #f8fffa 0%, #e8f5e9 100%);
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+            border: 1px solid rgba(46, 139, 87, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-item strong {
+            color: #2e7d32;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1em;
+        }
+
+        input, select, textarea {
+            padding: 15px;
+            border: 2px solid #e8f5e9;
+            border-radius: 12px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background-color: #f8fffa;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2e8b57;
+            box-shadow: 0 0 0 4px rgba(46, 139, 87, 0.15);
+            background-color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        button {
+            background: linear-gradient(135deg, #2e8b57 0%, #3cb371 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin: 5px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(46, 139, 87, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(46, 139, 87, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .message {
+            padding: 18px;
+            border-radius: 12px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: 600;
+            animation: slideIn 0.5s ease;
+            border-left: 4px solid;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left-color: #4caf50;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border-left-color: #f44336;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 1.1em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .loading::after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e8f5e9;
+            border-top: 4px solid #2e8b57;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            background: #f8fffa;
+            border-radius: 15px;
+            border: 2px dashed #c8e6c9;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 15px;
+            color: #2e7d32;
+            font-size: 1.4em;
+        }
+
+        .refresh-btn {
+            background: #2e8b57;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(46, 139, 87, 0.4);
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(46, 139, 87, 0.5);
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-actions h2 {
+            color: #2e7d32;
+            font-size: 1.8em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .care-history {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e8f5e9;
+        }
+
+        .care-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s ease;
+            border-radius: 8px;
+        }
+
+        .care-item:hover {
+            background-color: #f8fffa;
+        }
+
+        .care-item:last-child {
+            border-bottom: none;
+        }
+
+        .care-info {
+            flex: 1;
+        }
+
+        .care-type {
+            font-weight: bold;
+            color: #2e8b57;
+            font-size: 1.1em;
+        }
+
+        .care-date {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .care-notes {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Barra de scroll personalizada */
+        body::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: rgba(46, 139, 87, 0.1);
+            border-radius: 6px;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #2e8b57, #3cb371);
+            border-radius: 6px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #3cb371, #4caf50);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .tab-button {
+                min-width: 100%;
+                padding: 15px 20px;
+                font-size: 1em;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+            
+            .header-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .header-actions h2 {
+                text-align: center;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+            
+            .card, .plant-card {
+                padding: 20px;
+            }
+            
+            .leaf {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Elementos decorativos de folhas -->
+    <div class="leaf leaf-1" style="--initial-rotate: 15deg;">🌿</div>
+    <div class="leaf leaf-2" style="--initial-rotate: -10deg;">🍃</div>
+    <div class="leaf leaf-3" style="--initial-rotate: -20deg;">🌱</div>
+    <div class="leaf leaf-4" style="--initial-rotate: 25deg;">🍀</div>
+    <div class="leaf leaf-5" style="--initial-rotate: 5deg;">🌿</div>
+    <div class="leaf leaf-6" style="--initial-rotate: -15deg;">🍃</div>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-title">
+                    <h1>🌿 VerdeVivo</h1>
+                    <p>Seu diário de cuidados com plantas</p>
+                </div>
+                <div class="user-info">
+                    <span id="user-welcome">Bem-vindo, Usuário!</span>
+                    <button class="logout-btn" onclick="logout()">Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="tab-container">
+            <button class="tab-button active" onclick="switchTab('plants', event)">
+                🌱 Minhas Plantas
+            </button>
+            <button class="tab-button" onclick="switchTab('add-plant', event)">
+                ➕ Nova Planta
+            </button>
+            <button class="tab-button" onclick="switchTab('care', event)">
+                💧 Registrar Cuidados
+            </button>
+        </div>
+
+        <!-- Aba Minhas Plantas -->
+        <div id="plants-tab" class="tab-content active">
+            <div class="header-actions">
+                <h2>🌱 Minhas Plantas</h2>
+                <button class="refresh-btn" onclick="loadPlants()" title="Atualizar plantas">
+                    🔄 Atualizar
+                </button>
+            </div>
+            
+            <div class="card">
+                <h3>📊 Estatísticas do Meu Jardim</h3>
+                <div id="garden-stats">
+                    <div class="loading">Carregando estatísticas...</div>
+                </div>
+            </div>
+
+            <div id="plants-list">
+                <div class="loading">Carregando suas plantas...</div>
+            </div>
+        </div>
+
+        <!-- Aba Nova Planta -->
+        <div id="add-plant-tab" class="tab-content">
+            <div class="header-actions">
+                <h2>➕ Adicionar Nova Planta</h2>
+            </div>
+            
+            <div class="card">
+                <form id="add-plant-form">
+                    <div class="form-group">
+                        <label>📝 Apelido da Planta:</label>
+                        <input type="text" id="plant-nickname" required placeholder="Ex: Suculentinha, Samambaia da Sala">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🌿 Espécie:</label>
+                        <input type="text" id="plant-species" required placeholder="Ex: Echeveria elegans, Nephrolepis exaltata">
+                    </div>
+                    
+                    <button type="submit">Adicionar Planta</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h3>🌿 Plantas Sugeridas</h3>
+                <div class="grid">
+                    <div class="plant-card">
+                        <h3>Suculenta</h3>
+                        <p>Echeveria elegans</p>
+                        <p class="care-notes">🌞 Luz indireta | 💧 Rega a cada 2 semanas</p>
+                        <button onclick="fillSuggestedPlant('Suculentinha', 'Echeveria elegans')">Usar esta planta</button>
+                    </div>
+                    
+                    <div class="plant-card">
+                        <h3>Samambaia</h3>
+                        <p>Nephrolepis exaltata</p>
+                        <p class="care-notes">🌥️ Sombra | 💧 Rega 2-3 vezes por semana</p>
+                        <button onclick="fillSuggestedPlant('Samambaia', 'Nephrolepis exaltata')">Usar esta planta</button>
+                    </div>
+                    
+                    <div class="plant-card">
+                        <h3>Espada de São Jorge</h3>
+                        <p>Sansevieria trifasciata</p>
+                        <p class="care-notes">🌞 Qualquer luz | 💧 Rega a cada 3 semanas</p>
+                        <button onclick="fillSuggestedPlant('Espada São Jorge', 'Sansevieria trifasciata')">Usar esta planta</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Registrar Cuidados -->
+        <div id="care-tab" class="tab-content">
+            <div class="header-actions">
+                <h2>💧 Registrar Cuidados</h2>
+                <button class="refresh-btn" onclick="loadPlantsForCare()" title="Atualizar lista">
+                    🔄 Atualizar
+                </button>
+            </div>
+            
+            <div class="card">
+                <form id="add-care-form">
+                    <div class="form-group">
+                        <label>🌱 Selecionar Planta:</label>
+                        <select id="care-plant" required>
+                            <option value="">Selecione uma planta</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📅 Data do Cuidado:</label>
+                        <input type="date" id="care-date" required value="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🔧 Tipo de Cuidado:</label>
+                        <select id="care-type" required>
+                            <option value="">Selecione o tipo</option>
+                            <option value="Rega">💧 Rega</option>
+                            <option value="Adubação">🌱 Adubação</option>
+                            <option value="Poda">✂️ Poda</option>
+                            <option value="Transplante">🪴 Transplante</option>
+                            <option value="Limpeza">🧹 Limpeza</option>
+                            <option value="Outro">🔍 Outro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📝 Observações (opcional):</label>
+                        <textarea id="care-notes" rows="3" placeholder="Ex: Regada com 100ml de água, Adubação orgânica aplicada..."></textarea>
+                    </div>
+                    
+                    <button type="submit">Registrar Cuidado</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h3>📝 Histórico Recente de Cuidados</h3>
+                <div id="recent-care-history">
+                    <div class="loading">Carregando histórico...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Credenciais do Supabase
+        const SUPABASE_URL = 'https://yuauootoyxbhvmoqnqpq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1YXVvb3RveXhiaHZtb3FucXBxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1MDgyNjMsImV4cCI6MjA3NTA4NDI2M30.Xf9Y8aO2aY9swI2l0v-JjQiZiMAkbIGu1ohxzqFgmlA';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let currentUser = null;
+
+        // FUNÇÃO CORRIGIDA: Obter data atual no fuso horário de SP (UTC-3)
+        function getCurrentDateSP() {
+            const now = new Date();
+            // Ajusta para o fuso horário de São Paulo (UTC-3)
+            const offsetSP = -3 * 60; // UTC-3 em minutos
+            const localOffset = now.getTimezoneOffset(); // Offset local em minutos
+            const diff = offsetSP - localOffset;
+            
+            const adjustedDate = new Date(now.getTime() + diff * 60000);
+            return adjustedDate.toISOString().split('T')[0];
+        }
+
+        // FUNÇÃO CORRIGIDA: Formatar data considerando o fuso horário
+        function formatarData(data) {
+            if (!data) return 'Data inválida';
+            try {
+                const date = new Date(data);
+                // Ajusta para o fuso horário brasileiro (UTC-3)
+                const offset = date.getTimezoneOffset();
+                const adjustedDate = new Date(date.getTime() - (offset * 60000));
+                return adjustedDate.toLocaleDateString('pt-BR');
+            } catch (error) {
+                return 'Data inválida';
+            }
+        }
+
+        async function initializeApp() {
+            try {
+                console.log('Inicializando aplicação...');
+                
+                const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+                
+                if (sessionError) {
+                    console.error('Erro ao verificar sessão:', sessionError);
+                    redirectToLogin();
+                    return;
+                }
+                
+                if (!session) {
+                    console.log('Nenhuma sessão encontrada, redirecionando para login...');
+                    redirectToLogin();
+                    return;
+                }
+
+                currentUser = session.user;
+                console.log('Usuário logado:', currentUser.email);
+                
+                // Criar ou atualizar perfil do usuário na tabela usuarios
+                await createOrUpdateUserProfile();
+                
+                updateUIForUser();
+                await loadPlants();
+                await loadPlantsForCare();
+                await loadGardenStats();
+                await loadRecentCareHistory();
+                
+            } catch (error) {
+                console.error('Erro na inicialização:', error);
+                showMessage('Erro ao carregar o dashboard. Tente novamente.', 'error');
+            }
+        }
+
+        // NOVA FUNÇÃO: Criar ou atualizar perfil do usuário
+        async function createOrUpdateUserProfile() {
+            try {
+                const { data: existingUser, error: checkError } = await supabase
+                    .from('usuarios')
+                    .select('*')
+                    .eq('id', currentUser.id)
+                    .single();
+
+                if (checkError && checkError.code !== 'PGRST116') {
+                    throw checkError;
+                }
+
+                if (!existingUser) {
+                    // Criar novo perfil
+                    const { error: insertError } = await supabase
+                        .from('usuarios')
+                        .insert([{
+                            id: currentUser.id,
+                            nome: currentUser.user_metadata?.nome || currentUser.email.split('@')[0],
+                            email: currentUser.email
+                        }]);
+
+                    if (insertError) throw insertError;
+                    console.log('Perfil de usuário criado com sucesso');
+                }
+            } catch (error) {
+                console.error('Erro ao criar/atualizar perfil:', error);
+            }
+        }
+
+        function redirectToLogin() {
+            window.location.href = 'login.html';
+        }
+
+        function switchTab(tabName, event) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            if (tabName === 'plants') {
+                loadPlants();
+            } else if (tabName === 'care') {
+                loadPlantsForCare();
+                loadRecentCareHistory();
+            }
+        }
+
+        async function logout() {
+            try {
+                const { error } = await supabase.auth.signOut();
+                if (error) throw error;
+                
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Erro ao fazer logout:', error);
+                window.location.href = 'login.html';
+            }
+        }
+
+        function updateUIForUser() {
+            const userWelcome = document.getElementById('user-welcome');
+            if (currentUser) {
+                userWelcome.textContent = `Bem-vindo, ${currentUser.user_metadata?.nome || currentUser.email || 'Usuário'}!`;
+            }
+        }
+
+        // FUNÇÕES PARA PLANTAS - CORRIGIDAS
+        async function addPlant(nome_apelido, especie) {
+            try {
+                const { data: novaPlanta, error } = await supabase
+                    .from('plantas')
+                    .insert([{
+                        user_id: currentUser.id,
+                        nome_apelido,
+                        especie
+                    }])
+                    .select()
+                    .single();
+
+                if (error) throw error;
+                showMessage('Planta adicionada com sucesso!', 'success');
+                return novaPlanta;
+            } catch (error) {
+                console.error('Erro ao adicionar planta:', error);
+                showMessage('Erro ao adicionar planta: ' + error.message, 'error');
+                return null;
+            }
+        }
+
+        async function deletePlant(plantId) {
+            if (!confirm('Tem certeza que deseja excluir esta planta? Todos os registros de cuidados também serão removidos.')) {
+                return;
+            }
+
+            try {
+                const { error } = await supabase
+                    .from('plantas')
+                    .delete()
+                    .eq('id', plantId)
+                    .eq('user_id', currentUser.id); // Segurança extra
+
+                if (error) throw error;
+                showMessage('Planta excluída com sucesso!', 'success');
+                loadPlants();
+                loadPlantsForCare();
+                loadGardenStats();
+            } catch (error) {
+                console.error('Erro ao excluir planta:', error);
+                showMessage('Erro ao excluir planta: ' + error.message, 'error');
+            }
+        }
+
+        // FUNÇÕES PARA CUIDADOS - CORRIGIDAS
+        async function addCare(planta_id, data_execucao, tipo_cuidado, observacoes) {
+            try {
+                const { data: novoCuidado, error } = await supabase
+                    .from('registros_cuidados')
+                    .insert([{
+                        planta_id,
+                        data_execucao,
+                        tipo_cuidado,
+                        observacoes
+                    }])
+                    .select()
+                    .single();
+
+                if (error) throw error;
+                showMessage('Cuidado registrado com sucesso!', 'success');
+                return novoCuidado;
+            } catch (error) {
+                console.error('Erro ao registrar cuidado:', error);
+                showMessage('Erro ao registrar cuidado: ' + error.message, 'error');
+                return null;
+            }
+        }
+
+        async function deleteCare(careId) {
+            if (!confirm('Tem certeza que deseja excluir este registro de cuidado?')) {
+                return;
+            }
+
+            try {
+                const { error } = await supabase
+                    .from('registros_cuidados')
+                    .delete()
+                    .eq('id', careId);
+
+                if (error) throw error;
+                showMessage('Registro de cuidado removido com sucesso!', 'success');
+                return true;
+            } catch (error) {
+                console.error('Erro ao deletar cuidado:', error);
+                showMessage('Erro ao remover cuidado: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        // FUNÇÕES DE CARREGAMENTO DE DADOS - CORRIGIDAS
+        async function loadPlants() {
+            const plantsList = document.getElementById('plants-list');
+            plantsList.innerHTML = '<div class="loading">Carregando suas plantas...</div>';
+
+            try {
+                const { data: plantas, error } = await supabase
+                    .from('plantas')
+                    .select(`
+                        *,
+                        registros_cuidados (*)
+                    `)
+                    .eq('user_id', currentUser.id)
+                    .order('data_cadastro', { ascending: false });
+
+                if (error) throw error;
+
+                if (!plantas || plantas.length === 0) {
+                    plantsList.innerHTML = `
+                        <div class="empty-state">
+                            <h3>🌱 Nenhuma planta cadastrada</h3>
+                            <p>Adicione sua primeira planta usando o formulário acima.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                plantsList.innerHTML = plantas.map(planta => {
+                    const ultimoCuidado = planta.registros_cuidados && planta.registros_cuidados.length > 0 
+                        ? planta.registros_cuidados.sort((a, b) => new Date(b.data_execucao) - new Date(a.data_execucao))[0]
+                        : null;
+
+                    return `
+                    <div class="plant-card">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <h3>${planta.nome_apelido}</h3>
+                            <button class="btn-danger" onclick="deletePlant('${planta.id}')">🗑️</button>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <strong>🌿 Espécie</strong><br>${planta.especie}
+                            </div>
+                            <div class="stat-item">
+                                <strong>📅 Cadastro</strong><br>${formatarData(planta.data_cadastro)}
+                            </div>
+                            <div class="stat-item">
+                                <strong>💧 Cuidados</strong><br>${planta.registros_cuidados ? planta.registros_cuidados.length : 0}
+                            </div>
+                        </div>
+                        ${ultimoCuidado ? `
+                        <div class="care-history">
+                            <strong>Último cuidado:</strong>
+                            <div class="care-info">
+                                <span class="care-type">${ultimoCuidado.tipo_cuidado}</span>
+                                <span class="care-date">${formatarData(ultimoCuidado.data_execucao)}</span>
+                                ${ultimoCuidado.observacoes ? `<div class="care-notes">${ultimoCuidado.observacoes}</div>` : ''}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `}).join('');
+            } catch (error) {
+                console.error('Erro ao carregar plantas:', error);
+                plantsList.innerHTML = `
+                    <div class="empty-state">
+                        <h3>❌ Erro ao carregar plantas</h3>
+                        <p>${error.message || 'Não foi possível carregar as plantas.'}</p>
+                        <button class="refresh-btn" onclick="loadPlants()" style="margin-top: 15px;">
+                            🔄 Tentar Novamente
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadPlantsForCare() {
+            const select = document.getElementById('care-plant');
+            
+            try {
+                const { data: plantas, error } = await supabase
+                    .from('plantas')
+                    .select('id, nome_apelido')
+                    .eq('user_id', currentUser.id)
+                    .order('nome_apelido');
+
+                if (error) throw error;
+
+                select.innerHTML = '<option value="">Selecione uma planta</option>' + 
+                    plantas.map(planta => 
+                        `<option value="${planta.id}">${planta.nome_apelido}</option>`
+                    ).join('');
+            } catch (error) {
+                console.error('Erro ao carregar plantas para select:', error);
+                select.innerHTML = '<option value="">Erro ao carregar plantas</option>';
+            }
+        }
+
+        async function loadGardenStats() {
+            const statsDiv = document.getElementById('garden-stats');
+            
+            try {
+                const { data: plantas, error: plantasError } = await supabase
+                    .from('plantas')
+                    .select('*')
+                    .eq('user_id', currentUser.id);
+                    
+                const { data: cuidados, error: cuidadosError } = await supabase
+                    .from('registros_cuidados')
+                    .select('*')
+                    .in('planta_id', plantas ? plantas.map(p => p.id) : []);
+
+                if (plantasError || cuidadosError) throw plantasError || cuidadosError;
+
+                const totalPlantas = plantas ? plantas.length : 0;
+                const totalCuidados = cuidados ? cuidados.length : 0;
+                
+                // Encontrar planta com mais cuidados
+                let plantaMaisCuidada = { nome_apelido: 'Nenhuma', count: 0 };
+                if (plantas && plantas.length > 0) {
+                    const plantasComContagem = await Promise.all(
+                        plantas.map(async (planta) => {
+                            const { count } = await supabase
+                                .from('registros_cuidados')
+                                .select('*', { count: 'exact', head: true })
+                                .eq('planta_id', planta.id);
+                            return { ...planta, count: count || 0 };
+                        })
+                    );
+                    
+                    plantaMaisCuidada = plantasComContagem.reduce((prev, current) => 
+                        (prev.count > current.count) ? prev : current
+                    );
+                }
+
+                statsDiv.innerHTML = `
+                    <div class="stats">
+                        <div class="stat-item">
+                            <strong>🌿 Total de Plantas</strong><br>${totalPlantas}
+                        </div>
+                        <div class="stat-item">
+                            <strong>💧 Total de Cuidados</strong><br>${totalCuidados}
+                        </div>
+                        <div class="stat-item">
+                            <strong>⭐ Planta Mais Cuidada</strong><br>${plantaMaisCuidada.nome_apelido}<br>
+                            <small>${plantaMaisCuidada.count || 0} cuidados</small>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+                statsDiv.innerHTML = `
+                    <div class="empty-state">
+                        <h3>⚠️ Erro ao carregar estatísticas</h3>
+                        <p>Tente recarregar a página.</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadRecentCareHistory() {
+            const historyDiv = document.getElementById('recent-care-history');
+            historyDiv.innerHTML = '<div class="loading">Carregando histórico...</div>';
+
+            try {
+                const { data: cuidados, error } = await supabase
+                    .from('registros_cuidados')
+                    .select(`
+                        *,
+                        plantas (nome_apelido)
+                    `)
+                    .in('planta_id', 
+                        await supabase
+                            .from('plantas')
+                            .select('id')
+                            .eq('user_id', currentUser.id)
+                            .then(({ data }) => data ? data.map(p => p.id) : [])
+                    )
+                    .order('data_execucao', { ascending: false })
+                    .limit(10);
+
+                if (error) throw error;
+
+                if (!cuidados || cuidados.length === 0) {
+                    historyDiv.innerHTML = `
+                        <div class="empty-state">
+                            <h3>📝 Nenhum cuidado registrado</h3>
+                            <p>Registre seu primeiro cuidado usando o formulário acima.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                historyDiv.innerHTML = cuidados.map(cuidado => `
+                    <div class="care-item">
+                        <div class="care-info">
+                            <div>
+                                <span class="care-type">${cuidado.tipo_cuidado}</span> - 
+                                <strong>${cuidado.plantas.nome_apelido}</strong>
+                            </div>
+                            <div class="care-date">${formatarData(cuidado.data_execucao)}</div>
+                            ${cuidado.observacoes ? `<div class="care-notes">${cuidado.observacoes}</div>` : ''}
+                        </div>
+                        <button class="btn-danger" onclick="deleteCareRecord('${cuidado.id}')">🗑️</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Erro ao carregar histórico:', error);
+                historyDiv.innerHTML = `
+                    <div class="empty-state">
+                        <h3>❌ Erro ao carregar histórico</h3>
+                        <p>${error.message || 'Não foi possível carregar o histórico.'}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function showMessage(message, type) {
+            const existingMessages = document.querySelectorAll('.message');
+            existingMessages.forEach(msg => msg.remove());
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+
+            const container = document.querySelector('.container');
+            container.insertBefore(messageDiv, container.firstChild);
+
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 5000);
+        }
+
+        function fillSuggestedPlant(nickname, species) {
+            document.getElementById('plant-nickname').value = nickname;
+            document.getElementById('plant-species').value = species;
+        }
+
+        async function deleteCareRecord(careId) {
+            const success = await deleteCare(careId);
+            if (success) {
+                loadRecentCareHistory();
+                loadPlants();
+                loadGardenStats();
+            }
+        }
+
+        // EVENT LISTENERS
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+
+            // Formulário de adição de planta
+            document.getElementById('add-plant-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const nickname = document.getElementById('plant-nickname').value;
+                const species = document.getElementById('plant-species').value;
+
+                if (!nickname || !species) {
+                    showMessage('Por favor, preencha todos os campos.', 'error');
+                    return;
+                }
+
+                const planta = await addPlant(nickname, species);
+                if (planta) {
+                    this.reset();
+                    loadPlants();
+                    loadPlantsForCare();
+                    loadGardenStats();
+                    // Volta para a aba de plantas
+                    document.querySelector('.tab-button.active').click();
+                }
+            });
+
+            // Formulário de registro de cuidados
+            document.getElementById('add-care-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const plantaId = document.getElementById('care-plant').value;
+                const data = document.getElementById('care-date').value;
+                const tipo = document.getElementById('care-type').value;
+                const observacoes = document.getElementById('care-notes').value;
+
+                if (!plantaId || !data || !tipo) {
+                    showMessage('Por favor, preencha todos os campos obrigatórios.', 'error');
+                    return;
+                }
+
+                const cuidado = await addCare(plantaId, data, tipo, observacoes);
+                if (cuidado) {
+                    this.reset();
+                    // Define a data atual CORRIGIDA como padrão
+                    document.getElementById('care-date').value = getCurrentDateSP();
+                    loadRecentCareHistory();
+                    loadPlants();
+                    loadGardenStats();
+                }
+            });
+
+            // Define a data atual CORRIGIDA como padrão no campo de data
+            document.getElementById('care-date').value = getCurrentDateSP();
+        });
+    </script>
+</body>
+</html>
