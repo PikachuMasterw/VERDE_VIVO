@@ -14,98 +14,27 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #2e8b57 0%, #3cb371 50%, #90ee90 100%);
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Elementos naturais de fundo */
-        .leaf {
-            position: fixed;
-            opacity: 0.15;
-            z-index: 0;
-            animation: float 20s infinite ease-in-out;
-            pointer-events: none;
-            font-size: 80px;
-            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
-        }
-
-        .leaf-1 {
-            top: 8%;
-            left: 3%;
-            animation-delay: 0s;
-            transform: rotate(15deg);
-        }
-
-        .leaf-2 {
-            top: 75%;
-            left: 6%;
-            animation-delay: 3s;
-            transform: rotate(-10deg);
-            font-size: 60px;
-        }
-
-        .leaf-3 {
-            top: 15%;
-            right: 4%;
-            animation-delay: 6s;
-            transform: rotate(-20deg);
-            font-size: 70px;
-        }
-
-        .leaf-4 {
-            top: 70%;
-            right: 7%;
-            animation-delay: 9s;
-            transform: rotate(25deg);
-            font-size: 50px;
-        }
-
-        .leaf-5 {
-            top: 40%;
-            left: 10%;
-            animation-delay: 12s;
-            transform: rotate(5deg);
-            font-size: 65px;
-        }
-
-        .leaf-6 {
-            top: 55%;
-            right: 9%;
-            animation-delay: 15s;
-            transform: rotate(-15deg);
-            font-size: 75px;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(var(--initial-rotate, 0deg));
-            }
-            33% {
-                transform: translateY(-25px) rotate(calc(var(--initial-rotate, 0deg) + 8deg));
-            }
-            66% {
-                transform: translateY(15px) rotate(calc(var(--initial-rotate, 0deg) - 5deg));
-            }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            position: relative;
-            z-index: 1;
         }
 
         header {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            padding: 25px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
             margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
         .header-content {
@@ -122,388 +51,252 @@
 
         .header-title h1 {
             color: white;
-            font-size: 2.8em;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            font-weight: 700;
+            font-size: 2.5em;
+            margin-bottom: 5px;
         }
 
         .header-title p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.2em;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1em;
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
+            position: static;
+            transform: none;
             color: white;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 12px 20px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
         }
 
         .logout-btn {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 8px 15px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
+            transition: background 0.3s ease;
         }
 
         .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .tab-container {
             display: flex;
             justify-content: center;
             margin-bottom: 30px;
-            gap: 15px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
         .tab-button {
             background: rgba(255, 255, 255, 0.2);
             border: none;
-            padding: 18px 30px;
-            border-radius: 50px;
+            padding: 15px 25px;
+            border-radius: 25px;
             color: white;
             font-size: 1.1em;
             cursor: pointer;
-            transition: all 0.4s ease;
-            min-width: 220px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            transition: all 0.3s ease;
+            min-width: 200px;
         }
 
         .tab-button.active {
-            background: rgba(255, 255, 255, 0.35);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
         }
 
         .tab-button:hover {
             background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
         }
 
         .tab-content {
             display: none;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 35px;
+            border-radius: 15px;
+            padding: 30px;
             min-height: 500px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         }
 
         .tab-content.active {
             display: block;
-            animation: fadeInUp 0.5s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .card {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            border-left: 5px solid #2e8b57;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-            margin-top: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
 
         .plant-card {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            border-left: 5px solid #2e8b57;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .plant-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #2e8b57, #3cb371, #90ee90);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #43e97b;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease;
         }
 
         .plant-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
         }
 
         .plant-card h3 {
-            color: #2e7d32;
-            margin-bottom: 12px;
-            font-size: 1.4em;
-            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
         }
 
         .stats {
             display: flex;
             gap: 15px;
-            margin: 15px 0;
+            margin: 10px 0;
             flex-wrap: wrap;
         }
 
         .stat-item {
-            background: linear-gradient(135deg, #f8fffa 0%, #e8f5e9 100%);
-            padding: 18px;
-            border-radius: 12px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
             text-align: center;
             flex: 1;
             min-width: 120px;
-            border: 1px solid rgba(46, 139, 87, 0.1);
-            transition: transform 0.2s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-2px);
-        }
-
-        .stat-item strong {
-            color: #2e7d32;
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.95em;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         label {
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2e7d32;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1em;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
         }
 
         input, select, textarea {
-            padding: 15px;
-            border: 2px solid #e8f5e9;
-            border-radius: 12px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
             font-size: 1em;
-            transition: all 0.3s ease;
-            background-color: #f8fffa;
-            font-family: inherit;
+            transition: border-color 0.3s ease;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #2e8b57;
-            box-shadow: 0 0 0 4px rgba(46, 139, 87, 0.15);
-            background-color: #ffffff;
-            transform: translateY(-2px);
+            border-color: #43e97b;
         }
 
         button {
-            background: linear-gradient(135deg, #2e8b57 0%, #3cb371 100%);
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             color: white;
             border: none;
-            padding: 15px 25px;
-            border-radius: 12px;
+            padding: 12px 20px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 1em;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease;
             margin: 5px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(46, 139, 87, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        button:hover::before {
-            left: 100%;
         }
 
         button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(46, 139, 87, 0.5);
+            transform: translateY(-2px);
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
 
         .btn-warning {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         }
 
         .message {
-            padding: 18px;
-            border-radius: 12px;
-            margin: 15px 0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
             text-align: center;
-            font-weight: 600;
-            animation: slideIn 0.5s ease;
-            border-left: 4px solid;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            font-weight: bold;
         }
 
         .success {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-left-color: #4caf50;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
 
         .error {
-            background: #ffebee;
-            color: #c62828;
-            border-left-color: #f44336;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
 
         .loading {
             text-align: center;
-            padding: 50px;
+            padding: 40px;
             color: #666;
             font-size: 1.1em;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .loading::after {
-            content: '';
-            width: 40px;
-            height: 40px;
-            border: 4px solid #e8f5e9;
-            border-top: 4px solid #2e8b57;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
         }
 
         .empty-state {
             text-align: center;
-            padding: 50px;
+            padding: 40px;
             color: #666;
-            background: #f8fffa;
-            border-radius: 15px;
-            border: 2px dashed #c8e6c9;
         }
 
         .empty-state h3 {
-            margin-bottom: 15px;
-            color: #2e7d32;
-            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: #333;
         }
 
         .refresh-btn {
-            background: #2e8b57;
+            background: #43e97b;
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
-            margin: 15px 0;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(46, 139, 87, 0.4);
+            margin: 10px 0;
+            transition: transform 0.2s ease;
         }
 
         .refresh-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(46, 139, 87, 0.5);
         }
 
         .header-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .header-actions h2 {
-            color: #2e7d32;
-            font-size: 1.8em;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
 
         .care-history {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #e8f5e9;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
         }
 
         .care-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 10px;
             border-bottom: 1px solid #f0f0f0;
-            transition: background-color 0.2s ease;
-            border-radius: 8px;
-        }
-
-        .care-item:hover {
-            background-color: #f8fffa;
         }
 
         .care-item:last-child {
@@ -516,117 +309,49 @@
 
         .care-type {
             font-weight: bold;
-            color: #2e8b57;
-            font-size: 1.1em;
+            color: #43e97b;
         }
 
         .care-date {
             color: #666;
             font-size: 0.9em;
-            margin-top: 5px;
         }
 
         .care-notes {
             color: #888;
             font-size: 0.9em;
-            margin-top: 8px;
-            font-style: italic;
+            margin-top: 5px;
         }
 
         .hidden {
             display: none;
         }
 
-        /* Barra de scroll personalizada */
-        body::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        body::-webkit-scrollbar-track {
-            background: rgba(46, 139, 87, 0.1);
-            border-radius: 6px;
-        }
-
-        body::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #2e8b57, #3cb371);
-            border-radius: 6px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        body::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #3cb371, #4caf50);
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
-                gap: 20px;
+                gap: 15px;
             }
             
             .user-info {
-                width: 100%;
+                position: static;
                 justify-content: center;
                 margin-top: 15px;
             }
             
             .tab-button {
-                min-width: 100%;
-                padding: 15px 20px;
+                min-width: 150px;
+                padding: 12px 20px;
                 font-size: 1em;
             }
             
             .stats {
                 flex-direction: column;
             }
-            
-            .header-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .header-actions h2 {
-                text-align: center;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .tab-content {
-                padding: 20px;
-            }
-            
-            .card, .plant-card {
-                padding: 20px;
-            }
-            
-            .leaf {
-                display: none;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- Elementos decorativos de folhas -->
-    <div class="leaf leaf-1" style="--initial-rotate: 15deg;">🌿</div>
-    <div class="leaf leaf-2" style="--initial-rotate: -10deg;">🍃</div>
-    <div class="leaf leaf-3" style="--initial-rotate: -20deg;">🌱</div>
-    <div class="leaf leaf-4" style="--initial-rotate: 25deg;">🍀</div>
-    <div class="leaf leaf-5" style="--initial-rotate: 5deg;">🌿</div>
-    <div class="leaf leaf-6" style="--initial-rotate: -15deg;">🍃</div>
-
     <div class="container">
         <header>
             <div class="header-content">
@@ -642,15 +367,9 @@
         </header>
 
         <div class="tab-container">
-            <button class="tab-button active" onclick="switchTab('plants', event)">
-                🌱 Minhas Plantas
-            </button>
-            <button class="tab-button" onclick="switchTab('add-plant', event)">
-                ➕ Nova Planta
-            </button>
-            <button class="tab-button" onclick="switchTab('care', event)">
-                💧 Registrar Cuidados
-            </button>
+            <button class="tab-button active" onclick="switchTab('plants', event)">🌱 Minhas Plantas</button>
+            <button class="tab-button" onclick="switchTab('add-plant', event)">➕ Nova Planta</button>
+            <button class="tab-button" onclick="switchTab('care', event)">💧 Registrar Cuidados</button>
         </div>
 
         <!-- Aba Minhas Plantas -->
@@ -683,16 +402,16 @@
             <div class="card">
                 <form id="add-plant-form">
                     <div class="form-group">
-                        <label>📝 Apelido da Planta:</label>
+                        <label for="plant-nickname">Apelido da Planta:</label>
                         <input type="text" id="plant-nickname" required placeholder="Ex: Suculentinha, Samambaia da Sala">
                     </div>
                     
                     <div class="form-group">
-                        <label>🌿 Espécie:</label>
+                        <label for="plant-species">Espécie:</label>
                         <input type="text" id="plant-species" required placeholder="Ex: Echeveria elegans, Nephrolepis exaltata">
                     </div>
                     
-                    <button type="submit">Adicionar Planta</button>
+                    <button type="submit" class="btn-success">Adicionar Planta</button>
                 </form>
             </div>
             
@@ -735,19 +454,19 @@
             <div class="card">
                 <form id="add-care-form">
                     <div class="form-group">
-                        <label>🌱 Selecionar Planta:</label>
+                        <label for="care-plant">Selecionar Planta:</label>
                         <select id="care-plant" required>
                             <option value="">Selecione uma planta</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
-                        <label>📅 Data do Cuidado:</label>
+                        <label for="care-date">Data do Cuidado:</label>
                         <input type="date" id="care-date" required value="">
                     </div>
                     
                     <div class="form-group">
-                        <label>🔧 Tipo de Cuidado:</label>
+                        <label for="care-type">Tipo de Cuidado:</label>
                         <select id="care-type" required>
                             <option value="">Selecione o tipo</option>
                             <option value="Rega">💧 Rega</option>
@@ -760,11 +479,11 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>📝 Observações (opcional):</label>
+                        <label for="care-notes">Observações (opcional):</label>
                         <textarea id="care-notes" rows="3" placeholder="Ex: Regada com 100ml de água, Adubação orgânica aplicada..."></textarea>
                     </div>
                     
-                    <button type="submit">Registrar Cuidado</button>
+                    <button type="submit" class="btn-success">Registrar Cuidado</button>
                 </form>
             </div>
             
@@ -784,62 +503,25 @@
         
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let currentUser = null;
-
-        // FUNÇÃO CORRIGIDA: Obter data atual no fuso horário de SP (UTC-3)
-        function getCurrentDateSP() {
-            const now = new Date();
-            // Ajusta para o fuso horário de São Paulo (UTC-3)
-            const offsetSP = -3 * 60; // UTC-3 em minutos
-            const localOffset = now.getTimezoneOffset(); // Offset local em minutos
-            const diff = offsetSP - localOffset;
-            
-            const adjustedDate = new Date(now.getTime() + diff * 60000);
-            return adjustedDate.toISOString().split('T')[0];
-        }
-
-        // FUNÇÃO CORRIGIDA: Formatar data considerando o fuso horário
-        function formatarData(data) {
-            if (!data) return 'Data inválida';
-            try {
-                const date = new Date(data);
-                // Ajusta para o fuso horário brasileiro (UTC-3)
-                const offset = date.getTimezoneOffset();
-                const adjustedDate = new Date(date.getTime() - (offset * 60000));
-                return adjustedDate.toLocaleDateString('pt-BR');
-            } catch (error) {
-                return 'Data inválida';
-            }
-        }
+        let plantsSubscription = null;
+        let careSubscription = null;
 
         async function initializeApp() {
             try {
-                console.log('Inicializando aplicação...');
-                
-                const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-                
-                if (sessionError) {
-                    console.error('Erro ao verificar sessão:', sessionError);
-                    redirectToLogin();
-                    return;
-                }
+                const { data: { session } } = await supabase.auth.getSession();
                 
                 if (!session) {
-                    console.log('Nenhuma sessão encontrada, redirecionando para login...');
-                    redirectToLogin();
+                    window.location.href = 'index.html';
                     return;
                 }
 
                 currentUser = session.user;
-                console.log('Usuário logado:', currentUser.email);
-                
-                // Criar ou atualizar perfil do usuário na tabela usuarios
-                await createOrUpdateUserProfile();
-                
                 updateUIForUser();
                 await loadPlants();
                 await loadPlantsForCare();
                 await loadGardenStats();
                 await loadRecentCareHistory();
+                setupRealtimeSubscription();
                 
             } catch (error) {
                 console.error('Erro na inicialização:', error);
@@ -847,39 +529,49 @@
             }
         }
 
-        // NOVA FUNÇÃO: Criar ou atualizar perfil do usuário
-        async function createOrUpdateUserProfile() {
+        function setupRealtimeSubscription() {
             try {
-                const { data: existingUser, error: checkError } = await supabase
-                    .from('usuarios')
-                    .select('*')
-                    .eq('id', currentUser.id)
-                    .single();
+                // Inscrever para atualizações em plantas
+                plantsSubscription = supabase
+                    .channel('plants-changes')
+                    .on(
+                        'postgres_changes',
+                        {
+                            event: '*',
+                            schema: 'public',
+                            table: 'plantas'
+                        },
+                        (payload) => {
+                            console.log('Mudança detectada em plantas:', payload);
+                            loadPlants();
+                            loadPlantsForCare();
+                            loadGardenStats();
+                        }
+                    )
+                    .subscribe();
 
-                if (checkError && checkError.code !== 'PGRST116') {
-                    throw checkError;
-                }
+                // Inscrever para atualizações em cuidados
+                careSubscription = supabase
+                    .channel('care-changes')
+                    .on(
+                        'postgres_changes',
+                        {
+                            event: '*',
+                            schema: 'public',
+                            table: 'registros_cuidados'
+                        },
+                        (payload) => {
+                            console.log('Mudança detectada em cuidados:', payload);
+                            loadPlants();
+                            loadRecentCareHistory();
+                            loadGardenStats();
+                        }
+                    )
+                    .subscribe();
 
-                if (!existingUser) {
-                    // Criar novo perfil
-                    const { error: insertError } = await supabase
-                        .from('usuarios')
-                        .insert([{
-                            id: currentUser.id,
-                            nome: currentUser.user_metadata?.nome || currentUser.email.split('@')[0],
-                            email: currentUser.email
-                        }]);
-
-                    if (insertError) throw insertError;
-                    console.log('Perfil de usuário criado com sucesso');
-                }
             } catch (error) {
-                console.error('Erro ao criar/atualizar perfil:', error);
+                console.error('Erro ao configurar subscription:', error);
             }
-        }
-
-        function redirectToLogin() {
-            window.location.href = 'login.html';
         }
 
         function switchTab(tabName, event) {
@@ -902,35 +594,34 @@
         }
 
         async function logout() {
-    try {
-        if (plantsSubscription) {
-            plantsSubscription.unsubscribe();
+            try {
+                if (plantsSubscription) {
+                    plantsSubscription.unsubscribe();
+                }
+                if (careSubscription) {
+                    careSubscription.unsubscribe();
+                }
+                await supabase.auth.signOut();
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Erro ao fazer logout:', error);
+                window.location.href = 'index.html';
+            }
         }
-        if (careSubscription) {
-            careSubscription.unsubscribe();
-        }
-        await supabase.auth.signOut();
-        window.location.href = 'https://pikachumasterw.github.io/VERDE_VIVO/';
-    } catch (error) {
-        console.error('Erro ao fazer logout:', error);
-        window.location.href = 'https://pikachumasterw.github.io/VERDE_VIVO/';
-    }
-}
 
         function updateUIForUser() {
             const userWelcome = document.getElementById('user-welcome');
             if (currentUser) {
-                userWelcome.textContent = `Bem-vindo, ${currentUser.user_metadata?.nome || currentUser.email || 'Usuário'}!`;
+                userWelcome.textContent = `Bem-vindo, ${currentUser.email}!`;
             }
         }
 
-        // FUNÇÕES PARA PLANTAS - CORRIGIDAS
+        // FUNÇÕES PARA PLANTAS
         async function addPlant(nome_apelido, especie) {
             try {
                 const { data: novaPlanta, error } = await supabase
                     .from('plantas')
                     .insert([{
-                        user_id: currentUser.id,
                         nome_apelido,
                         especie
                     }])
@@ -956,8 +647,7 @@
                 const { error } = await supabase
                     .from('plantas')
                     .delete()
-                    .eq('id', plantId)
-                    .eq('user_id', currentUser.id); // Segurança extra
+                    .eq('id', plantId);
 
                 if (error) throw error;
                 showMessage('Planta excluída com sucesso!', 'success');
@@ -970,7 +660,7 @@
             }
         }
 
-        // FUNÇÕES PARA CUIDADOS - CORRIGIDAS
+        // FUNÇÕES PARA CUIDADOS
         async function addCare(planta_id, data_execucao, tipo_cuidado, observacoes) {
             try {
                 const { data: novoCuidado, error } = await supabase
@@ -1015,7 +705,7 @@
             }
         }
 
-        // FUNÇÕES DE CARREGAMENTO DE DADOS - CORRIGIDAS
+        // FUNÇÕES DE CARREGAMENTO DE DADOS
         async function loadPlants() {
             const plantsList = document.getElementById('plants-list');
             plantsList.innerHTML = '<div class="loading">Carregando suas plantas...</div>';
@@ -1027,7 +717,6 @@
                         *,
                         registros_cuidados (*)
                     `)
-                    .eq('user_id', currentUser.id)
                     .order('data_cadastro', { ascending: false });
 
                 if (error) throw error;
@@ -1097,7 +786,6 @@
                 const { data: plantas, error } = await supabase
                     .from('plantas')
                     .select('id, nome_apelido')
-                    .eq('user_id', currentUser.id)
                     .order('nome_apelido');
 
                 if (error) throw error;
@@ -1118,13 +806,11 @@
             try {
                 const { data: plantas, error: plantasError } = await supabase
                     .from('plantas')
-                    .select('*')
-                    .eq('user_id', currentUser.id);
+                    .select('*');
                     
                 const { data: cuidados, error: cuidadosError } = await supabase
                     .from('registros_cuidados')
-                    .select('*')
-                    .in('planta_id', plantas ? plantas.map(p => p.id) : []);
+                    .select('*');
 
                 if (plantasError || cuidadosError) throw plantasError || cuidadosError;
 
@@ -1140,7 +826,7 @@
                                 .from('registros_cuidados')
                                 .select('*', { count: 'exact', head: true })
                                 .eq('planta_id', planta.id);
-                            return { ...planta, count: count || 0 };
+                            return { ...planta, count };
                         })
                     );
                     
@@ -1185,13 +871,6 @@
                         *,
                         plantas (nome_apelido)
                     `)
-                    .in('planta_id', 
-                        await supabase
-                            .from('plantas')
-                            .select('id')
-                            .eq('user_id', currentUser.id)
-                            .then(({ data }) => data ? data.map(p => p.id) : [])
-                    )
                     .order('data_execucao', { ascending: false })
                     .limit(10);
 
@@ -1228,6 +907,16 @@
                         <p>${error.message || 'Não foi possível carregar o histórico.'}</p>
                     </div>
                 `;
+            }
+        }
+
+        // FUNÇÕES AUXILIARES
+        function formatarData(data) {
+            if (!data) return 'Data inválida';
+            try {
+                return new Date(data).toLocaleDateString('pt-BR');
+            } catch (error) {
+                return 'Data inválida';
             }
         }
 
@@ -1307,16 +996,16 @@
                 const cuidado = await addCare(plantaId, data, tipo, observacoes);
                 if (cuidado) {
                     this.reset();
-                    // Define a data atual CORRIGIDA como padrão
-                    document.getElementById('care-date').value = getCurrentDateSP();
+                    // Define a data atual como padrão
+                    document.getElementById('care-date').value = new Date().toISOString().split('T')[0];
                     loadRecentCareHistory();
                     loadPlants();
                     loadGardenStats();
                 }
             });
 
-            // Define a data atual CORRIGIDA como padrão no campo de data
-            document.getElementById('care-date').value = getCurrentDateSP();
+            // Define a data atual como padrão no campo de data
+            document.getElementById('care-date').value = new Date().toISOString().split('T')[0];
         });
     </script>
 </body>
