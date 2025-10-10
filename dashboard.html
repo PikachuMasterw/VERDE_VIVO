@@ -902,16 +902,20 @@
         }
 
         async function logout() {
-            try {
-                const { error } = await supabase.auth.signOut();
-                if (error) throw error;
-                
-                window.location.href = 'login.html';
-            } catch (error) {
-                console.error('Erro ao fazer logout:', error);
-                window.location.href = 'login.html';
-            }
+    try {
+        if (plantsSubscription) {
+            plantsSubscription.unsubscribe();
         }
+        if (careSubscription) {
+            careSubscription.unsubscribe();
+        }
+        await supabase.auth.signOut();
+        window.location.href = '/VERDE_VIVO/';
+    } catch (error) {
+        console.error('Erro ao fazer logout:', error);
+        window.location.href = '/VERDE_VIVO/';
+    }
+}
 
         function updateUIForUser() {
             const userWelcome = document.getElementById('user-welcome');
